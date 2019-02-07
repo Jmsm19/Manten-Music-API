@@ -12,7 +12,10 @@ return [
     */
 
     'supportsCredentials' => false,
-    'allowedOrigins' => [env('APP_FRONTEND_URL', 'http://localhost:3000')],
+    'allowedOrigins' => [
+        env('APP_FRONTEND_URL'),
+        'http://localhost:3000'
+    ],
     'allowedOriginsPatterns' => [],
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['*'],
