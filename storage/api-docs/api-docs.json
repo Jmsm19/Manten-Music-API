@@ -1,0 +1,315 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Manten Music",
+        "description": "Manten Music API",
+        "contact": {
+            "name": "Jorge Soto",
+            "email": "jorgemsm@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/artist": {
+            "get": {
+                "tags": [
+                    "Model: User"
+                ],
+                "summary": "Display a listing of Artists",
+                "operationId": "getAllArtists",
+                "responses": {
+                    "200": {
+                        "description": "Artistas encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArtistsCollection"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user": {
+            "post": {
+                "tags": [
+                    "Model: User"
+                ],
+                "summary": "Get User by username",
+                "operationId": "getUserByName",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserByNameRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuario encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Datos inválidos, parámetos requeridos faltantes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InvalidData"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Album": {
+                "title": "Album",
+                "description": "Album model",
+                "required": [
+                    "id",
+                    "name",
+                    "year",
+                    "artist_id"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "Unique identificator",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "title": "name",
+                        "description": "Album name",
+                        "type": "string"
+                    },
+                    "year": {
+                        "title": "year",
+                        "description": "Album release year",
+                        "type": "integer"
+                    },
+                    "artist_id": {
+                        "title": "artist_id",
+                        "description": "Unique identificator for Artists",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "type": "object"
+            },
+            "Artist": {
+                "title": "Artist",
+                "description": "Artist model",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "Unique identificator",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "title": "name",
+                        "description": "Artist name",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "UserByNameRequest": {
+                "required": [
+                    "username"
+                ],
+                "properties": {
+                    "username": {
+                        "description": "Username to search for",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Song": {
+                "title": "Song",
+                "description": "Song model",
+                "required": [
+                    "id",
+                    "title",
+                    "album_id"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "Unique identificator",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "title": {
+                        "title": "title",
+                        "description": "Song title",
+                        "type": "string"
+                    },
+                    "album_id": {
+                        "title": "album_id",
+                        "description": "Unique identificator for Albums",
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                },
+                "type": "object"
+            },
+            "ErrorResponse": {
+                "required": [
+                    "error"
+                ],
+                "properties": {
+                    "error": {
+                        "title": "error",
+                        "description": "Error message",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "InvalidData": {
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "title": "message",
+                        "description": "Response message",
+                        "type": "string"
+                    },
+                    "errors": {
+                        "title": "errors",
+                        "description": "Fields with errors",
+                        "properties": {
+                            "field": {
+                                "title": "field",
+                                "description": "Field with error",
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object",
+                "example": {
+                    "message": "The given data was invalid.",
+                    "errors": {
+                        "username": "['The username field is required.']"
+                    }
+                }
+            },
+            "UserResource": {
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "SongsCollection": {
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "AlbumResource": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "type": "integer"
+                    },
+                    "songs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SongsCollection"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ArtistResource": {
+                "properties": {
+                    "artist": {
+                        "type": "string"
+                    },
+                    "albums": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AlbumResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "ArtistsCollection": {
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArtistResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "title": "id",
+                        "description": "Unique identificator",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "title": "name",
+                        "description": "User name",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
